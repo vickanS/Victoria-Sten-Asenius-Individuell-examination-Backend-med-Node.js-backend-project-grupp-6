@@ -14,12 +14,12 @@ async function createOrder(req, res) {
   // Om produkten inte finns i menyn, returnera ett felmeddelande
   if (!product) {
     return res.status(400).json({ error: "Invalid product" });
-  }
+  };
 
   // Om priset inte matchar produktens pris, returnera ett felmeddelande
   if (product.price !== price) {
     return res.status(400).json({ error: "Invalid price" });
-  }
+  };
 
   // Skapa en order med titel och pris
   const order = { title, price };
@@ -40,10 +40,42 @@ async function createOrder(req, res) {
   } catch (error) {
     // Om något går fel, skicka ett felmeddelande tillbaka till klienten
     res.status(400).json({ error: "Failed to create order" });
-  }
-}
+  };
+};
+          
 
-export { createOrder };
+// Få fram orderhistorik
+
+async function orderHistory(req, res) {
+  try {
+    const order = await database.findOne({ _id: req.params.id });
+    if (order) {
+      res.json(order);
+    } else {
+      res.status(404).json({ error: "Order not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Failed to retrieve order history" });
+  };
+};
+
+// async function orderHistory(req, res) {
+//   database.findOne({ id: req.params.id })
+//   .then(order => {
+//     if(order) {
+//       res.json(order);
+//     }
+//     else {
+//       res.status(400).json({ error: "Order not found!"})
+//     }
+//   })
+// };
+
+// Ta bort order
+
+
+export { createOrder, orderHistory };
+
 
 // async function addToCart(order) {
 //   try {
@@ -53,10 +85,5 @@ export { createOrder };
 //     console.log(error);
 //   }
 // }
-
-// Få fram orderhistorik
-
-// Ta bort order
-
 
 // export { addToCart };
