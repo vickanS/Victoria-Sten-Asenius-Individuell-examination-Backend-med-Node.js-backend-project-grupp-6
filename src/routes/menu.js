@@ -3,7 +3,8 @@ import { menu } from "../config/data.js";
 
 const router = Router();
 
-// "GET" Visar hela menyn
+// "GET"/menu Visar hela menyn
+
 router.get("/", (req, res) => {
     res.json(menu);
   });

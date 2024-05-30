@@ -1,7 +1,7 @@
 import express from "express";
-import menuRouter from "./routes/menu.js";
-import aboutRouter from "./routes/companyInfo.js";
-import orderRouter from "./routes/order.js";
+import menuRouter from "./src/routes/menu.js"
+import aboutRouter from "./src/routes/companyInfo.js";
+import orderRouter from "./src/routes/order.js";
 
 const app = express();
 const PORT = 8001;
@@ -13,7 +13,6 @@ app.use(express.json());
 app.use("/menu", menuRouter);
 app.use("/about", aboutRouter);
 app.use("/order", orderRouter);
-app.use("/orders", orderRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}...`);
