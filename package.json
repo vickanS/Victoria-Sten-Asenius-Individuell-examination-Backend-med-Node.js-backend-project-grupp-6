@@ -1,0 +1,23 @@
+{
+  "name": "backend-project-grupp-6",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "joi": "^17.13.1",
+    "nedb-promises": "^6.2.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.2"
+  }
+}
