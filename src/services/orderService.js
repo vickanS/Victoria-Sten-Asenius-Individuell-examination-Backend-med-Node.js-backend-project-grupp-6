@@ -12,11 +12,11 @@ async function createOrder(req, res) {
   // Om produkten inte finns i menyn, returnera ett felmeddelande
   if (!product) {
     return res.status(400).json({ error: "Product not found" });
-  };
+  }
   // Om priset inte matchar produktens pris, returnera ett felmeddelande
   if (product.price !== price) {
     return res.status(400).json({ error: "Invalid price" });
-  };
+  }
 
   // Skapa en order med titel och pris
   const order = { title, price };
@@ -34,9 +34,8 @@ async function createOrder(req, res) {
   } catch (error) {
     // Om något går fel, skicka ett felmeddelande tillbaka till klienten
     res.status(400).json({ error: "Failed to create order" });
-  };
-};
-
+  }
+}
 
 // "GET"/order Få fram orderhistorik
 async function orderHistory(req, res) {
@@ -47,24 +46,27 @@ async function orderHistory(req, res) {
     res.json(orders);
   } catch (error) {
     // Om ett fel uppstår, skicka ett felmeddelande med statuskod 400 till klienten
-    res.status(400).json({ error: 'Failed to retrieve order history' });
-  };
-};
-
+    res.status(400).json({ error: "Failed to retrieve order history" });
+  }
+}
 
 // "DELETE"/order Ta bort order
+async function deleteOrder(req, res) {
+  try {
+    const order = await database.findOne({ _id: req.params.id });
 
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
 
-export { createOrder, orderHistory };
+    await database.remove({ _id: req.params.id });
 
+    res.status(200).json({ message: "Order removed successfully" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "An error occurred", error: error.message });
+  }
+}
 
-// async function addToCart(order) {
-//   try {
-//     const newOrder = await database.insert(order);
-//     console.log(newOrder);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
-
-// export { addToCart };
+export { createOrder, orderHistory, deleteOrder };
