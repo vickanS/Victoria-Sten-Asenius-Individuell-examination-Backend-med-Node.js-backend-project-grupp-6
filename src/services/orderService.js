@@ -7,12 +7,15 @@ const database = new nedb({ filename: "orders.db", autoload: true });
 async function createOrder(req, res) {
   // Hämta 'title' och 'price' från klientens förfrågan (request body)
   const { title, price } = req.body; // req.body används för att fånga upp data som skickas i en POST-begäran till servern.
+
   // Hitta produkten i menyn baserat på titeln
   const product = menu.find((item) => item.title === title);
+
   // Om produkten inte finns i menyn, returnera ett felmeddelande
   if (!product) {
     return res.status(400).json({ error: "Product not found" });
   }
+
   // Om priset inte matchar produktens pris, returnera ett felmeddelande
   if (product.price !== price) {
     return res.status(400).json({ error: "Invalid price" });
@@ -23,12 +26,14 @@ async function createOrder(req, res) {
   try {
     // Infogar ordern i databasen
     const newOrder = await database.insert(order);
+
     // Skapa ett svar med orderns titel, pris och ett framgångsmeddelande
     const response = {
       title: newOrder.title,
       price: newOrder.price,
       message: "Order created successfully",
     };
+
     // Skicka svaret tillbaka till klienten med statuskod 201 (Created)
     res.status(201).json(response);
   } catch (error) {
@@ -37,16 +42,20 @@ async function createOrder(req, res) {
   }
 }
 
-// "GET"/order Få fram orderhistorik
-async function orderHistory(req, res) {
+// "GET"/order varukorg
+async function viewCart(req, res) {
   try {
-    // Hämtar alla ordrar från databasen
-    const orders = await database.find({});
-    // Om ordrarna hämtas framgångsrikt, skicka dem tillbaka till klienten som JSON
-    res.json(orders);
+    // Visar vad du har i "varukorgen"
+    const cart = await database.find({}).exec();
+
+    // Räknar ut totalsumman
+    const totalPrice = cart.reduce((total, order) => total + order.price, 0);
+
+    // Skickar tillbaka ordern med totalsumman
+    res.status(200).json({ cart, totalPrice });
   } catch (error) {
     // Om ett fel uppstår, skicka ett felmeddelande med statuskod 400 till klienten
-    res.status(400).json({ error: "Failed to retrieve order history" });
+    res.status(400).json({ error: "Failed to retrieve cart" });
   }
 }
 
@@ -69,4 +78,4 @@ async function deleteOrder(req, res) {
   }
 }
 
-export { createOrder, orderHistory, deleteOrder };
+export { createOrder, viewCart, deleteOrder };
