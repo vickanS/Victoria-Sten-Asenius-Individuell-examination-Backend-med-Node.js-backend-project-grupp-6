@@ -3,7 +3,8 @@ import { companyInfo } from "../config/data.js";
 
 const router = Router();
 
-// Visar information om företaget
+// "GET"/about Visar information om företaget
+
 router.get("/", (req, res) => {
   res.json(companyInfo);
 });
