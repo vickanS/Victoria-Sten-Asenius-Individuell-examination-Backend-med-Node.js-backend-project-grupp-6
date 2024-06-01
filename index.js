@@ -1,10 +1,10 @@
 import express from "express";
-import menuRouter from "./src/routes/menu.js"
+import menuRouter from "./src/routes/menu.js";
 import aboutRouter from "./src/routes/companyInfo.js";
 import orderRouter from "./src/routes/order.js";
 
 const app = express();
-const PORT = 8001;
+const PORT = 8000;
 
 // Middleware
 app.use(express.json());
