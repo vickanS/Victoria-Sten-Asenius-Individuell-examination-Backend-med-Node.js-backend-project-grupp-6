@@ -1,6 +1,7 @@
 import express from "express";
 const router = express.Router();
 
+// Registrerade användare
 const users = [
   {
     id: 1,
@@ -34,6 +35,12 @@ const users = [
   },
 ];
 
+// GET-endpoint för att returnera alla användare
+router.get('/all', (req, res) => {
+  res.status(200).json(users);
+});
+
+// POST-endpoint för att registrera en ny användare
 router.post('/register', (req, res) => {
   const { username, password } = req.body;
   const newUser = {
@@ -46,12 +53,16 @@ router.post('/register', (req, res) => {
   res.status(201).json(newUser);
 });
 
+// POST-endpoint för att hantera inloggning av användare
 router.post('/login', (req, res) => {
   const { username, password } = req.body;
+  console.log("Inkommande data:", req.body); // Logga inkommande data
   const user = users.find(u => u.username === username && u.password === password);
   if (user) {
+    console.log("Användare hittades:", user);
     res.status(200).json({ message: "Inloggad", user });
   } else {
+    console.log("Användare hittades inte");
     res.status(401).json({ message: "Fel användarnamn eller lösenord" });
   }
 });
