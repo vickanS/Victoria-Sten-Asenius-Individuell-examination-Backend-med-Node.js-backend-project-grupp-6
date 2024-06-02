@@ -1,12 +1,12 @@
 import nedb from "nedb-promises";
-import { menu } from "../config/data.js";
+import { menu, users } from "../config/data.js";
 
 const database = new nedb({ filename: "orders.db", autoload: true });
 
 // "POST"/order Funktion för att skapa en ny order
 async function createOrder(req, res) {
   // Hämta 'title' och 'price' från klientens förfrågan (request body)
-  const { title, price } = req.body; // req.body används för att fånga upp data som skickas i en POST-begäran till servern.
+  const { title, price, userId } = req.body; // req.body används för att fånga upp data som skickas i en POST-begäran till servern.
 
   // Hitta produkten i menyn baserat på titeln
   const product = menu.find((item) => item.title === title);
@@ -22,10 +22,18 @@ async function createOrder(req, res) {
   }
 
   // Skapa en order med titel och pris
-  const order = { title, price };
+  const order = { title, price, userId };
   try {
     // Infogar ordern i databasen
     const newOrder = await database.insert(order);
+
+    // Lägga till ordern i användarens historik
+    const user = users.find((u) => u.id === userId);
+    if (user) {
+      user.orders.push(newOrder);
+    } else {
+      return res.status(400).json({ error: "User not found" });
+    }
 
     // Skapa ett svar med orderns titel, pris och ett framgångsmeddelande
     const response = {
@@ -69,6 +77,12 @@ async function deleteOrder(req, res) {
     }
 
     await database.remove({ _id: req.params.id });
+
+    // Ta bort ordern från användarens historik
+    const user = users.find((u) => u.id === order.userId);
+    if (user) {
+      user.orders = user.orders.filter((o) => o._id !== req.params.id);
+    }
 
     res.status(200).json({ message: "Order removed successfully" });
   } catch (error) {
