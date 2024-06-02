@@ -1,39 +1,7 @@
-import express from "express";
-const router = express.Router();
+import { Router } from "express";
+import { users  } from "../config/data.js"
 
-// Registrerade användare
-const users = [
-  {
-    id: 1,
-    username: 'JofAlm',
-    password: '123456', 
-    orders: []
-  },
-  {
-    id: 2,
-    username: 'LinneaSjoholm',
-    password: 'abcdef',
-    orders: []
-  },
-  {
-    id: 3,
-    username: 'Pesilian',
-    password: '789101', 
-    orders: []
-  },
-  {
-    id: 4,
-    username: 'patrikeriksson',
-    password: 'ghijkl', 
-    orders: []
-  },
-  {
-    id: 5,
-    username: 'vickanS',
-    password: '121314', 
-    orders: []
-  },
-];
+const router = Router();
 
 // GET-endpoint för att returnera alla användare
 router.get('/all', (req, res) => {
@@ -47,7 +15,6 @@ router.post('/register', (req, res) => {
     id: users.length + 1,
     username,
     password,
-    orders: []
   };
   users.push(newUser);
   res.status(201).json(newUser);
@@ -56,14 +23,14 @@ router.post('/register', (req, res) => {
 // POST-endpoint för att hantera inloggning av användare
 router.post('/login', (req, res) => {
   const { username, password } = req.body;
-  console.log("Inkommande data:", req.body); // Logga inkommande data
+  console.log("Incoming data:", req.body); // Logga inkommande data
   const user = users.find(u => u.username === username && u.password === password);
   if (user) {
-    console.log("Användare hittades:", user);
-    res.status(200).json({ message: "Inloggad", user });
+    console.log("User found:", user);
+    res.status(200).json({ message: "Logged in:", user });
   } else {
-    console.log("Användare hittades inte");
-    res.status(401).json({ message: "Fel användarnamn eller lösenord" });
+    console.log("User not found");
+    res.status(401).json({ message: "invalid username or password!" });
   }
 });
 
