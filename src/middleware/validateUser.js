@@ -5,7 +5,7 @@ function validateUser(req, res, next) {
     // Definiera ett valideringsschema med Joi
     const userSchema = joi.object({
         username: joi.string().alphanum().min(3).max(15).required(),
-        password: joi.string().min(5).required()
+        password: joi.string().min(5). required(),
     });
     // Validera req.body mot schemat
     const { error } = userSchema.validate(req.body);

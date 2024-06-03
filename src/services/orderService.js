@@ -22,18 +22,18 @@ async function createOrder(req, res) {
   }
 
   // Skapa en order med titel och pris
-  const order = { title, price, userId };
+  const order = { title, price };
   try {
     // Infogar ordern i databasen
     const newOrder = await database.insert(order);
 
     // Lägga till ordern i användarens historik
-    const user = users.find((u) => u.id === userId);
-    if (user) {
-      user.orders.push(newOrder);
-    } else {
-      return res.status(400).json({ error: "User not found" });
-    }
+    // const user = users.find((u) => u.id === userId);
+    // if (user) {
+    //   user.orders.push(newOrder);
+    // } else {
+    //   return res.status(400).json({ error: "User not found" });
+    // }
 
     // Skapa ett svar med orderns titel, pris och ett framgångsmeddelande
     const response = {
