@@ -48,33 +48,33 @@ const companyInfo = [
 const users = [
   {
     id: 1,
-    username: 'JofAlm',
-    password: '123456', 
-    orders: []
+    username: "JofAlm",
+    password: "123456",
+    orders: [],
   },
   {
     id: 2,
-    username: 'LinneaSjoholm',
-    password: 'abcdef',
-    orders: []
+    username: "LinneaSjoholm",
+    password: "abcdef",
+    orders: [],
   },
   {
     id: 3,
-    username: 'Pesilian',
-    password: '789101', 
-    orders: []
+    username: "Pesilian",
+    password: "789101",
+    orders: [],
   },
   {
     id: 4,
-    username: 'patrikeriksson',
-    password: 'ghijkl', 
-    orders: []
+    username: "patrikeriksson",
+    password: "ghijkl",
+    orders: [],
   },
   {
     id: 5,
-    username: 'vickanS',
-    password: '121314', 
-    orders: []
+    username: "vickanS",
+    password: "121314",
+    orders: [],
   },
 ];
 
