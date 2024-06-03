@@ -1,5 +1,7 @@
 import { Router } from "express";
 import { users } from "../config/data.js";
+import { registerUser, loginUser } from "../services/userService.js";
+import { validateUser } from "../middleware/validateUser.js";
 
 const router = Router();
 
@@ -8,33 +10,37 @@ router.get("/all", (req, res) => {
   res.status(200).json(users);
 });
 
+router.post("/register", validateUser, registerUser);
+router.post("/login", loginUser);
+
+
 // POST-endpoint för att registrera en ny användare
-router.post("/register", (req, res) => {
-  const { username, password } = req.body;
-  const newUser = {
-    id: users.length + 1,
-    username,
-    password,
-  };
-  users.push(newUser);
-  res.status(201).json(newUser);
-});
+// router.post("/register", (req, res) => {
+//   const { username, password } = req.body;
+//   const newUser = {
+//     id: users.length + 1,
+//     username,
+//     password,
+//   };
+//   users.push(newUser);
+//   res.status(201).json(newUser);
+// });
 
 // POST-endpoint för att hantera inloggning av användare
-router.post("/login", (req, res) => {
-  const { username, password } = req.body;
-  console.log("Incoming data:", req.body); // Logga inkommande data
-  const user = users.find(
-    (u) => u.username === username && u.password === password
-  );
-  if (user) {
-    console.log("User found:", user);
-    res.status(200).json({ message: "Logged in:", user });
-  } else {
-    console.log("User not found");
-    res.status(401).json({ message: "invalid username or password!" });
-  }
-});
+// router.post("/login", (req, res) => {
+//   const { username, password } = req.body;
+//   console.log("Incoming data:", req.body); // Logga inkommande data
+//   const user = users.find(
+//     (u) => u.username === username && u.password === password
+//   );
+//   if (user) {
+//     console.log("User found:", user);
+//     res.status(200).json({ message: "Logged in:", user });
+//   } else {
+//     console.log("User not found");
+//     res.status(401).json({ message: "invalid username or password!" });
+//   }
+// });
 
 // Ny endpoint för att hämta orderhistorik för en specifik användare
 router.get("/:userId/orders", (req, res) => {
