@@ -1,3 +1,9 @@
+import nedb from "nedb-promises";
+
+const usersOrder = new nedb({ filename: "usersOrder.db", autoload: true });
+const guestOrder = new nedb({ filename: "guestOrders.db", autoload: true });
+const newUserDb = new nedb({ filename: "newUsers.db", autoload: true });
+
 const menu = [
   {
     id: 1,
@@ -44,4 +50,38 @@ const companyInfo = [
   },
 ];
 
-export { menu, companyInfo };
+// Registrerade användare
+const users = [
+  {
+    id: 1,
+    username: "JofAlm",
+    password: "123456",
+    orders: [],
+  },
+  {
+    id: 2,
+    username: "LinneaSjoholm",
+    password: "abcdef",
+    orders: [],
+  },
+  {
+    id: 3,
+    username: "Pesilian",
+    password: "789101",
+    orders: [],
+  },
+  {
+    id: 4,
+    username: "patrikeriksson",
+    password: "ghijkl",
+    orders: [],
+  },
+  {
+    id: 5,
+    username: "vickanS",
+    password: "121314",
+    orders: [],
+  },
+];
+
+export { menu, companyInfo, newUserDb,users, usersOrder, guestOrder };
