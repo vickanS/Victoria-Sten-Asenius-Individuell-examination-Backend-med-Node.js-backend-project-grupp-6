@@ -1,1 +1,10 @@
 node_modules
+<<<<<<< HEAD
+orders.db
+users.db
+cart.db
+=======
+guestOrders.db
+newUsers.db
+usersOrder.db
+>>>>>>> Linnea

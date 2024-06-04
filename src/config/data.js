@@ -1,3 +1,9 @@
+import nedb from "nedb-promises";
+
+const usersOrder = new nedb({ filename: "usersOrder.db", autoload: true });
+const guestOrder = new nedb({ filename: "guestOrders.db", autoload: true });
+const newUserDb = new nedb({ filename: "newUsers.db", autoload: true });
+
 const menu = [
   {
     id: 1,
@@ -78,4 +84,4 @@ const users = [
   },
 ];
 
-export { menu, companyInfo, users };
+export { menu, companyInfo, newUserDb,users, usersOrder, guestOrder };
