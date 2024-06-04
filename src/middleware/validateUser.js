@@ -4,8 +4,8 @@ import joi from 'joi';
 function validateUser(req, res, next) {
     // Definiera ett valideringsschema med Joi
     const userSchema = joi.object({
-        username: joi.string().alphanum().min(3).max(15).required(),
-        password: joi.string().min(5). required(),
+    username: joi.string().alphanum().min(3).max(15).required(),
+    password: joi.string().min(5). required(),
     });
     // Validera req.body mot schemat
     const { error } = userSchema.validate(req.body);
@@ -15,6 +15,6 @@ function validateUser(req, res, next) {
     }
     // Om valideringen lyckas, gå vidare till nästa middleware eller route handler
     next();
-}
+};
 
 export { validateUser };

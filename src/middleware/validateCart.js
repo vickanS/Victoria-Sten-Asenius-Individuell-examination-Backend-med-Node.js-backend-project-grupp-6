@@ -1,4 +1,4 @@
-// Middleware för att validera när man lägger till nåt i kunvagnen
+// Middleware för att validera när man lägger till nåt i kundvagnen
 function validateCart(req, res, next) {
   // Destrukturera title och price från req.body
   const { title, price } = req.body;
