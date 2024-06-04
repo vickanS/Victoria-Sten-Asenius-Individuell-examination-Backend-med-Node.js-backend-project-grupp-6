@@ -1,13 +1,16 @@
+import bcrypt from "bcrypt";
 import { userDb } from "../config/db.js";
 
 // Funktion för att registrera en ny användare
 
 async function registerUser(req, res) {
   const { username, password } = req.body;
-  const user = { username, password };
 
   try {
-  // Försök att lägga till den nya användaren i databasen
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = { username, password: hashedPassword };
+
+    // Försök att lägga till den nya användaren i databasen
     const newUser = await userDb.insert(user);
   // Om det lyckas, returnera den nya användaren
     res.status(201).json(newUser);
