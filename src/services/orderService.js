@@ -1,5 +1,6 @@
 import { cartDb, orderDb } from "../config/db.js";
 
+// Funktion för att skapa en ny order
 async function createOrder(req, res) {
   try {
   // Hämta alla objekt i kundvagnen från databasen

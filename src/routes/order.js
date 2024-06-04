@@ -4,6 +4,7 @@ import authenticate from "../middleware/auth.js";
 
 const orderRouter = Router();
 
+// "POST"/order - Skapa en ny order
 orderRouter.post("/", createOrder);
 
 export default orderRouter;

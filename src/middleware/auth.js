@@ -1,3 +1,4 @@
+
 // Middleware som kontrollerar om användaren är inloggad
 const authenticate = (req, res, next) => {
   // Kontrollera om det finns en global variabel currentUser som är satt (dvs. användaren är inloggad)

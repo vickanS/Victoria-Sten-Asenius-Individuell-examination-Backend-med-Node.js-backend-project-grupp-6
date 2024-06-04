@@ -1,7 +1,7 @@
 import { cartDb } from "../config/db.js";
 import { menu } from "../config/data.js";
 
-// "POST"/cart Funktion för att lägga till i kundvagnen
+// Funktion för att lägga till i kundvagnen
 async function addToCart(req, res) {
   // Hämta 'title' och 'price' från klientens förfrågan (request body)
   const { title, price } = req.body; // req.body används för att fånga upp data som skickas i en POST-begäran till servern.
@@ -39,7 +39,7 @@ async function addToCart(req, res) {
   }
 };
 
-// "GET"/cart varukorg
+// Funktion för varukorg
 async function viewCart(req, res) {
   try {
   // Visar vad du har i "kundvagnen"
@@ -56,7 +56,7 @@ async function viewCart(req, res) {
   }
 };
 
-// "DELETE"/cart/id Ta bort från kundvagnen
+// Funktion för att ta bort från kundvagnen
 async function removeFromCart(req, res) {
   try {
   // Hitta en specifik order i databasen baserat på order-ID

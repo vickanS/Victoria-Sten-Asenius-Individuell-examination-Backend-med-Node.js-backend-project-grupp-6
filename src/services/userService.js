@@ -2,15 +2,16 @@ import bcrypt from "bcrypt";
 import { userDb } from "../config/db.js";
 
 // Funktion för att registrera en ny användare
-
 async function registerUser(req, res) {
   const { username, password } = req.body;
 
   try {
+  // Kontrollera att både användarnamn och lösenord finns
     const hashedPassword = await bcrypt.hash(password, 10);
+  // Skapa ett nytt användarobjekt med användarnamn och hashat lösenord
     const user = { username, password: hashedPassword };
 
-    // Försök att lägga till den nya användaren i databasen
+  // Försök att lägga till den nya användaren i databasen
     const newUser = await userDb.insert(user);
   // Om det lyckas, returnera den nya användaren
     res.status(201).json(newUser);
@@ -18,10 +19,9 @@ async function registerUser(req, res) {
   // Om ett fel uppstår, returnera ett felmeddelande
     res.status(400).json({ error: "Failed to register user" });
   }
-}
+};
 
 // Funktion för att logga in en användare
-
 async function loginUser(req, res) {
   const { username, password } = req.body;
 
@@ -50,7 +50,6 @@ async function loginUser(req, res) {
 };
 
 // Funktion för att hämta en användares orderhistorik
-
 async function getUserOrders(req, res) {
   try {
   // Hämta användarens ID från request params
