@@ -1,7 +1,5 @@
-import nedb from "nedb-promises";
+import { cartDb } from "../config/db.js";
 import { menu } from "../config/data.js";
-
-const database = new nedb({ filename: "cart.db", autoload: true });
 
 // "POST"/cart Funktion för att lägga till i kundvagnen
 async function addToCart(req, res) {
@@ -25,7 +23,7 @@ async function addToCart(req, res) {
   const order = { title, price };
   try {
     // Lägger till kaffet i cart databasen
-    const newOrder = await database.insert(order);
+    const newOrder = await cartDb.insert(order);
 
     // Skapa ett svar med orderns titel, pris och ett framgångsmeddelande
     const response = {
@@ -46,7 +44,7 @@ async function addToCart(req, res) {
 async function viewCart(req, res) {
   try {
     // Visar vad du har i "kundvagnen"
-    const cart = await database.find({}).exec();
+    const cart = await cartDb.find({});
 
     // Räknar ut totalsumman
     const totalPrice = cart.reduce((total, order) => total + order.price, 0);
@@ -62,13 +60,13 @@ async function viewCart(req, res) {
 // "DELETE"/cart/id Ta bort från kundvagnen
 async function removeFromCart(req, res) {
   try {
-    const order = await database.findOne({ _id: req.params.id });
+    const order = await cartDb.findOne({ _id: req.params.id });
 
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
     }
 
-    await database.remove({ _id: req.params.id });
+    await cartDb.remove({ _id: req.params.id });
 
     res.status(200).json({ message: "Order removed successfully" });
   } catch (error) {

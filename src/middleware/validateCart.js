@@ -1,5 +1,5 @@
-// Middleware för att validera en order
-function validateOrder(req, res, next) {
+// Middleware för att validera när man lägger till nåt i kunvagnen
+function validateCart(req, res, next) {
   // Destrukturera title och price från req.body
   const { title, price } = req.body;
   // Kontrollera om title eller price saknas
@@ -11,4 +11,4 @@ function validateOrder(req, res, next) {
   next();
 }
 
-export { validateOrder };
+export { validateCart };
