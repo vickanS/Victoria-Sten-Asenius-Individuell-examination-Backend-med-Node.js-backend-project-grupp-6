@@ -1,6 +1,4 @@
-import nedb from "nedb-promises";
-
-const database = new nedb({ filename: "users.db", autoload: true });
+import { userDb } from "../config/db.js";
 
 // Funktion för att registrera en ny användare
 
@@ -10,7 +8,7 @@ async function registerUser(req, res) {
 
   try {
     // Försök att lägga till den nya användaren i databasen
-    const newUser = await database.insert(user);
+    const newUser = await userDb.insert(user);
     // Om det lyckas, returnera den nya användaren
     res.status(201).json(newUser);
   } catch (error) {
@@ -33,7 +31,7 @@ async function loginUser(req, res) {
   }
   try {
     // Sök efter användaren i vår databas för nya användare
-    const user = database.find(
+    const user = userDb.find(
       (u) => u.username === username && u.password === password
     );
 
@@ -69,4 +67,4 @@ async function getUserOrders(req, res) {
   }
 }
 
-export { registerUser, loginUser, getUserOrders, database };
+export { registerUser, loginUser, getUserOrders };
