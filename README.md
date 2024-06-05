@@ -23,19 +23,47 @@ http://localhost:8000
 ## Endpoints:
 
 ### 1.
-/menu
+URL: /menu
+Method: GET
+Description: This endpoint returns the entire menu.
 
 ### 2.
-/about
+URL: /about
+Method: GET
+Description: This endpoint returns information about the company.
 
 ### 3.
-/order
+URL: /order
+Method: POST
+Description: This endpoint allows authenticated users to create a new order.
 
 ### 4.
 /user
 
+URL: /user/register
+Method: POST
+Description: This endpoint allows a new user to register.
+
+URL: /user/login
+Method: POST
+Description: This endpoint allows a user to log in.
+
+URL: /user/logout
+Method: POST
+Description: This endpoint allows a user to log out.
+
 ### 5.
-/cart
+URL: /cart
+method: POST
+Description: this endpoint allow a user to add an item to their cart.
+
+URL: /cart
+method: GET
+Description: this endpoint returns the current contents of the cart along with the total price.
+
+URL: /cart/:id
+method: DELETE
+Description: This endpoint allows a user to remove an item from their cart by specifying the item's ID in the URL.
 
 
 ### Contributors:
