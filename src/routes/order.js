@@ -4,6 +4,7 @@ import authenticate from "../middleware/auth.js";
 
 const orderRouter = Router();
 
-orderRouter.post("/", createOrder);
+// POST anrop för att skapa order
+orderRouter.post("/", authenticate, createOrder);
 
 export default orderRouter;
