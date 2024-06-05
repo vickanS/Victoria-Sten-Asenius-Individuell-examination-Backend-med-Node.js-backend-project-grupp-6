@@ -49,6 +49,7 @@ async function loginUser(req, res) {
   }
 };
 
+<<<<<<< HEAD
 // Funktion för att hämta en användares orderhistorik
 async function getUserOrders(req, res) {
   try {
@@ -71,3 +72,6 @@ async function getUserOrders(req, res) {
 };
 
 export { registerUser, loginUser, getUserOrders };
+=======
+export { registerUser, loginUser };
+>>>>>>> origin/dev
