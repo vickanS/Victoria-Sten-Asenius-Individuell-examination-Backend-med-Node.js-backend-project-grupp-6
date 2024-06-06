@@ -49,29 +49,4 @@ async function loginUser(req, res) {
   }
 };
 
-<<<<<<< HEAD
-// Funktion för att hämta en användares orderhistorik
-async function getUserOrders(req, res) {
-  try {
-  // Hämta användarens ID från request params
-    const userId = req.params.userId;
-  // Använd findOne för att hämta en enskild orderhistorik baserat på användarens ID
-    const usersOrder = await orders.findOne({ userId });
-
-  // Om det inte finns någon orderhistorik för den angivna användaren, skicka tillbaka ett felmeddelande med status 404
-    if (usersOrder.length === 0) {
-      return res.status(404).json({ error: "No orders found" });
-    }
-
-  // Skicka tillbaka användarens orderhistorik med status 200
-    res.status(200).json(usersOrder);
-  } catch (error) {
-  // Om ett fel uppstår vid hämtning av användarens orderhistorik, skicka tillbaka ett felmeddelande med status 400
-    res.status(400).json({ error: "Failed to get users orders" });
-  }
-};
-
-export { registerUser, loginUser, getUserOrders };
-=======
 export { registerUser, loginUser };
->>>>>>> origin/dev

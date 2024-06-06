@@ -11,13 +11,6 @@ async function createOrder(req, res) {
     }
   // Beräkna det totala priset för alla objekt i kundvagnen
     const totalPrice = cart.reduce((total, order) => total + order.price, 0);
-<<<<<<< HEAD
-  // Skapa en ny order med objekten från kundvagnen, totala priset och det aktuella datumet
-    const order = { items: cart, totalPrice, createdAt: new Date() };
-  // Spara den nya ordern i order-databasen
-    const newOrder = await orderDb.insert(order);
-  // Ta bort alla objekt från kundvagnen
-=======
 
     //Beräkna leveranstid
     const orderTime = new Date();
@@ -50,7 +43,6 @@ async function createOrder(req, res) {
     }
 
     // Tömmer kundvagnen efter ordern är skapad
->>>>>>> origin/dev
     await cartDb.remove({}, { multi: true });
   // Skicka tillbaka ett svar med status 201 (Created) och information om den nya ordern
     res.status(201).json({
