@@ -5,6 +5,7 @@ import authenticate from "../middleware/auth.js";
 
 const orderRouter = Router();
 
+// "POST" /order skapar order
 orderRouter.post("/", authenticate, createOrder);
 
 // "GET" /order visar alla ordrar och total summa
