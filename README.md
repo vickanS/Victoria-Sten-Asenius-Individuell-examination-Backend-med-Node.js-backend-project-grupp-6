@@ -90,6 +90,41 @@ res:
 URL: /order
 Method: POST
 Description: This endpoint allows authenticated users to create a new order.
+req:
+{
+  "title": "Kaffe Latte",
+	"price": 54
+}
+res:
+{
+	"items": [
+		{
+			"title": "Cortado",
+			"price": 39,
+			"preptime": 5,
+			"_id": "0jvouLw5Yd7F0WUV"
+		},
+		{
+			"title": "Cortado",
+			"price": 39,
+			"preptime": 5,
+			"_id": "5ZJNSFKOedz74zmQ"
+		}
+	],
+	"totalPrice": 78,
+	"delivery": "2024-06-06T08:59:08.913Z",
+	"message": "Order created successfully"
+}
+
+URL: /order
+Method: GET
+Description: This endpoint shows a list of all your orders, and the total sum.
+HÄR MÅSTE DET SKRIVAS NÅGOT!!
+
+URL: /order/:orderId
+Method: GET
+Description: This endpoint shows the status of a specific order.
+HÄR MÅSTE DET SKRIVAS NÅGOT!!
 
 ### 4.
 /user
