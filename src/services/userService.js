@@ -2,7 +2,6 @@ import bcrypt from "bcrypt";
 import { userDb } from "../config/db.js";
 
 // Funktion för att registrera en ny användare
-
 async function registerUser(req, res) {
   const { username, password } = req.body;
 
@@ -21,7 +20,6 @@ async function registerUser(req, res) {
 }
 
 // Funktion för att logga in en användare
-
 async function loginUser(req, res) {
   const { username, password } = req.body;
 
