@@ -1,5 +1,5 @@
-import { cartDb } from "../config/db.js";
-import { menu } from "../config/data.js";
+import { cartDb } from '../config/db.js';
+import { menu } from '../config/data.js';
 
 // Funktion för att lägga till i kundvagnen
 async function addToCart(req, res) {
@@ -7,35 +7,48 @@ async function addToCart(req, res) {
   const { title, price } = req.body; // req.body används för att fånga upp data som skickas i en POST-begäran till servern.
 
   // Hitta produkten i menyn baserat på titeln
-  const product = menu.find((item) => item.title === title);
+  const product = menu.find(item => item.title === title);
 
   // Om produkten inte finns i menyn, returnera ett felmeddelande
   if (!product) {
-    return res.status(400).json({ error: "Product not found" });
+    return res.status(400).json({ error: 'Product not found' });
   }
 
   // Om priset inte matchar produktens pris, returnera ett felmeddelande
   if (product.price !== price) {
-    return res.status(400).json({ error: "Invalid price" });
+    return res.status(400).json({ error: 'Invalid price' });
   }
 
   // Skapa en order med titel och pris
-  const order = { title, price };
+  const order = { title, price, preptime: product.preptime };
   try {
   // Lägger till kaffet i cart databasen
     const newOrder = await cartDb.insert(order);
+<<<<<<< HEAD
   // Skapa ett svar med orderns titel, pris och ett framgångsmeddelande
+=======
+
+    console.log(order);
+
+    // Skapa ett svar med orderns titel, pris och ett framgångsmeddelande
+>>>>>>> origin/dev
     const response = {
       title: newOrder.title,
       price: newOrder.price,
-      message: "Added to cart successfully",
+      preptime: newOrder.preptime,
+      message: 'Added to cart successfully',
     };
 
   // Skicka svaret tillbaka till klienten med statuskod 201 (Created)
     res.status(201).json(response);
   } catch (error) {
+<<<<<<< HEAD
   // Om något går fel, skicka ett felmeddelande tillbaka till klienten
     res.status(400).json({ error: "Failed to add to cart" });
+=======
+    // Om något går fel, skicka ett felmeddelande tillbaka till klienten
+    res.status(400).json({ error: 'Failed to add to cart' });
+>>>>>>> origin/dev
   }
 };
 
@@ -51,8 +64,13 @@ async function viewCart(req, res) {
   // Skickar tillbaka ordern med totalsumman
     res.status(200).json({ cart, totalPrice });
   } catch (error) {
+<<<<<<< HEAD
   // Om ett fel uppstår, skicka ett felmeddelande med statuskod 400 till klienten
     res.status(400).json({ error: "Failed to retrieve cart" });
+=======
+    // Om ett fel uppstår, skicka ett felmeddelande med statuskod 400 till klienten
+    res.status(400).json({ error: 'Failed to retrieve cart' });
+>>>>>>> origin/dev
   }
 };
 
@@ -63,17 +81,22 @@ async function removeFromCart(req, res) {
     const order = await cartDb.findOne({ _id: req.params.id });
   // Om ordern inte finns, returnera ett 404-fel (Not Found) och ett meddelande
     if (!order) {
-      return res.status(404).json({ message: "Order not found" });
+      return res.status(404).json({ message: 'Order not found' });
     }
   // Om ordern finns, ta bort den från databasen
     await cartDb.remove({ _id: req.params.id });
+<<<<<<< HEAD
   // Skicka tillbaka ett svar med status 200 (OK) och ett meddelande om att ordern togs bort framgångsrikt
     res.status(200).json({ message: "Order removed successfully" });
+=======
+
+    res.status(200).json({ message: 'Order removed successfully' });
+>>>>>>> origin/dev
   } catch (error) {
   // Om något går fel, skicka tillbaka ett svar med status 500 (Internal Server Error) och ett felmeddelande
     res
       .status(500)
-      .json({ message: "An error occurred", error: error.message });
+      .json({ message: 'An error occurred', error: error.message });
   }
 };
 
