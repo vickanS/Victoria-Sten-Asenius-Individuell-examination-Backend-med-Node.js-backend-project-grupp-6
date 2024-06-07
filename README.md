@@ -9,7 +9,7 @@
 
 ## Start up the project:
 
-1. In the terminal, write git clone INSERT THE LINK TO YOUR GITHUB REPOSITORY HERE
+1. In the terminal, write git clone INSERT THE LINK TO THE GITHUB REPOSITORY HERE
 
 2. Ensure you have Node.js installed, then write npm install in the terminal
 
