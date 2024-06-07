@@ -1,9 +1,5 @@
 import { Router } from 'express';
-import {
-  registerUser,
-  loginUser,
-  getUserOrders,
-} from '../services/userService.js';
+import { registerUser, loginUser } from '../services/userService.js';
 import { validateUser } from '../middleware/validateUser.js';
 
 const authRouter = Router();
@@ -19,8 +15,5 @@ authRouter.post('/logout', (req, res) => {
   global.currentUser = null;
   res.status(200).json({ message: 'Logged out successfully' });
 });
-
-//"GET" /user/:userId - för att se orderhistorik för specifik användare
-authRouter.get('/:userId', getUserOrders);
 
 export default authRouter;

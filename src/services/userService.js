@@ -1,8 +1,7 @@
 import bcrypt from 'bcrypt';
-import { userDb, orderDb } from '../config/db.js';
+import { userDb } from '../config/db.js';
 
 // Funktion för att registrera en ny användare
-
 async function registerUser(req, res) {
   const { username, password } = req.body;
 
@@ -21,7 +20,6 @@ async function registerUser(req, res) {
 }
 
 // Funktion för att logga in en användare
-
 async function loginUser(req, res) {
   const { username, password } = req.body;
 
@@ -49,28 +47,4 @@ async function loginUser(req, res) {
   }
 }
 
-// Funktion för att hämta en användares orderhistorik
-
-async function getUserOrders(req, res) {
-  try {
-    // Hämta användarens ID från request params
-    const userId = req.params.userId;
-    console.log(userId);
-
-    // Använd find för att hämta en enskild orderhistorik baserat på användarens ID
-    const usersOrder = await orderDb.find({ userId: userId });
-
-    // Om det inte finns någon orderhistorik för den angivna användaren, skicka tillbaka ett felmeddelande med status 404
-    if (usersOrder.length === 0) {
-      return res.status(404).json({ error: 'No orders found' });
-    }
-
-    // Skicka tillbaka användarens orderhistorik med status 200
-    res.status(200).json({ orderCount: usersOrder.length, orders: usersOrder });
-  } catch (error) {
-    // Om ett fel uppstår vid hämtning av användarens orderhistorik, skicka tillbaka ett felmeddelande med status 400
-    res.status(500).json({ error: 'Failed to get users orders' });
-  }
-}
-
-export { registerUser, loginUser, getUserOrders };
+export { registerUser, loginUser };
