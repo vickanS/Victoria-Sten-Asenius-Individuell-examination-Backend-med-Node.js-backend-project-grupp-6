@@ -5,11 +5,11 @@ import authenticate from "../middleware/auth.js";
 
 const orderRouter = Router();
 
-// "POST" /order skapar order
+// "POST" /order genomför beställning
 orderRouter.post("/", authenticate, createOrder);
 
 // "GET" /order visar alla ordrar och total summa
-orderRouter.get("/", authenticate, getUserOrders);
+orderRouter.get("/:userId", getUserOrders);
 
 // "GET" /order/:orderId visar status sidan för en specifik order
 orderRouter.get("/:orderId", getOrderById);
