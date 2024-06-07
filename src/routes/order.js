@@ -1,12 +1,12 @@
 import { Router } from 'express';
 import { createOrder, getUserOrders } from '../services/orderService.js';
 import { getOrderById } from '../services/statusService.js';
-import authenticate from '../middleware/auth.js';
+import { authenticateToken } from '../middleware/authToken.js';
 
 const orderRouter = Router();
 
 // "POST" /order genomför beställning
-orderRouter.post('/', authenticate, createOrder);
+orderRouter.post('/', authenticateToken, createOrder);
 
 // "GET" /order visar alla ordrar och total summa
 orderRouter.get('/user/:userId', getUserOrders);

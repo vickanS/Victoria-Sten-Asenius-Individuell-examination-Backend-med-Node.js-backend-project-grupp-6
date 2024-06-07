@@ -1,5 +1,6 @@
 import { cartDb, orderDb } from '../config/db.js';
 
+//Beställning som inloggad användare:
 async function createOrder(req, res) {
   try {
     const cart = await cartDb.find({});
@@ -9,7 +10,7 @@ async function createOrder(req, res) {
 
     const totalPrice = cart.reduce((total, order) => total + order.price, 0);
 
-    //Beräkna leveranstid
+    // Beräkna leveranstid
     const orderTime = new Date();
     const maxPreparationTime = Math.max(...cart.map(order => order.preptime));
 
@@ -21,30 +22,27 @@ async function createOrder(req, res) {
 
     console.log(orderTime, deliveryTime);
 
+    // Kolla om användaren är inloggad
+    const user = req.user;
     const order = {
       items: cart,
       totalPrice,
       deliveryTime,
       createdAt: new Date(),
+      userId: user.id, // Inkluderar userId om användaren är inloggad
     };
 
-    // Kolla om användaren är inloggad
-    const user = req.user;
-    if (user) {
-      // Om användaren är inloggad, lägg till användar info till ordern och spara till orderhistoriken
-      order.userId = user.id;
-      await orderDb.insert(order);
-    }
+    const newOrder = await orderDb.insert(order);
 
     // Tömmer kundvagnen efter ordern är skapad
     await cartDb.remove({}, { multi: true });
 
     res.status(201).json({
-      items: order.items,
-      totalPrice: order.totalPrice,
-      delivery: order.deliveryTime,
+      items: newOrder.items,
+      totalPrice: newOrder.totalPrice,
+      delivery: newOrder.deliveryTime,
       message: 'Order created successfully',
-      ...(user && { orderId: order._id }), // Inkluderar orderId om användaren är inloggad
+      orderId: newOrder._id, // Inkluderar orderId om användaren är inloggad
     });
   } catch (error) {
     res
