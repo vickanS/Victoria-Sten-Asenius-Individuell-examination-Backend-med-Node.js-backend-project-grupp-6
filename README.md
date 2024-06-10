@@ -9,7 +9,11 @@
 
 ## Start up the project:
 
+<<<<<<< HEAD
 1. In the terminal, write git clone INSERT THE LINK TO YOUR GITHUB REPOSITORY HERE
+=======
+1. In the terminal, write git clone INSERT THE LINK TO THE GITHUB REPOSITORY HERE
+>>>>>>> origin/main
 
 2. Ensure you have Node.js installed, then write npm install in the terminal
 
@@ -28,6 +32,7 @@ http://localhost:8000
 URL: /menu
 Method: GET
 Description: This endpoint returns the entire menu.
+<<<<<<< HEAD
 res:
 [
 	{
@@ -73,11 +78,15 @@ res:
 		"preptime": 5
 	}
 ]
+=======
+
+>>>>>>> origin/main
 
 ### 2.
 URL: /about
 Method: GET
 Description: This endpoint returns information about the company.
+<<<<<<< HEAD
 res:
 [
 	{
@@ -85,11 +94,15 @@ res:
 		"desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vitae condimentum neque. Suspendisse nec sollicitudin orci, vel tristique nisl. Ut in diam id odio efficitur laoreet. Sed sed massa consequat, malesuada neque eu, placerat orci. Nam molestie, enim eget malesuada finibus, tellus sem efficitur tortor, eget maximus erat lacus in."
 	}
 ]
+=======
+
+>>>>>>> origin/main
 
 ### 3.
 URL: /order
 Method: POST
 Description: This endpoint allows authenticated users to create a new order.
+<<<<<<< HEAD
 req:
 {
   "title": "Kaffe Latte",
@@ -115,16 +128,25 @@ res:
 	"delivery": "2024-06-06T08:59:08.913Z",
 	"message": "Order created successfully"
 }
+=======
+>>>>>>> origin/main
 
 URL: /order
 Method: GET
 Description: This endpoint shows a list of all your orders, and the total sum.
+<<<<<<< HEAD
 HÄR MÅSTE DET SKRIVAS NÅGOT!!
+=======
+>>>>>>> origin/main
 
 URL: /order/:orderId
 Method: GET
 Description: This endpoint shows the status of a specific order.
+<<<<<<< HEAD
 HÄR MÅSTE DET SKRIVAS NÅGOT!!
+=======
+
+>>>>>>> origin/main
 
 ### 4.
 /user
@@ -132,6 +154,7 @@ HÄR MÅSTE DET SKRIVAS NÅGOT!!
 URL: /user/register
 Method: POST
 Description: This endpoint allows a new user to register.
+<<<<<<< HEAD
 req:
 {
   "username": "vickan",
@@ -143,10 +166,13 @@ res:
 	"password": "$2b$10$Fh7Xk8MowBONZvLdKqrGy.ynY3pMANtGlrIFTVJDXnZfTGLLyFHm6",
 	"_id": "W3Y2rTOP0D7BSfPo"
 }
+=======
+>>>>>>> origin/main
 
 URL: /user/login
 Method: POST
 Description: This endpoint allows a user to log in.
+<<<<<<< HEAD
 req:
 {
 	"username": "vickan",
@@ -156,10 +182,13 @@ res:
 {
 	"message": "Login successful"
 }
+=======
+>>>>>>> origin/main
 
 URL: /user/logout
 Method: POST
 Description: This endpoint allows a user to log out.
+<<<<<<< HEAD
 req:
 {
 	"username": "vickan",
@@ -169,11 +198,15 @@ res:
 {
 	"message": "Logged out successfully"
 }
+=======
+
+>>>>>>> origin/main
 
 ### 5.
 URL: /cart
 method: POST
 Description: this endpoint allow a user to add an item to their cart.
+<<<<<<< HEAD
 req:
 {
   "title": "Cortado",
@@ -186,10 +219,13 @@ res:
 	"preptime": 5,
 	"message": "Added to cart successfully"
 }
+=======
+>>>>>>> origin/main
 
 URL: /cart
 method: GET
 Description: this endpoint returns the current contents of the cart along with the total price.
+<<<<<<< HEAD
 res:
 {
 	"cart": [
@@ -214,10 +250,13 @@ res:
 	],
 	"totalPrice": 132
 }
+=======
+>>>>>>> origin/main
 
 URL: /cart/:id
 method: DELETE
 Description: This endpoint allows a user to remove an item from their cart by specifying the item's ID in the URL.
+<<<<<<< HEAD
 res:
 {
 	"message": "Order removed successfully"
@@ -239,6 +278,11 @@ res:
 	],
 	"totalPrice": 78
 }
+=======
+
+
+
+>>>>>>> origin/main
 
 ### Contributors:
 Linnea Sjöholm
@@ -249,4 +293,8 @@ Victoria Sten Åsenius
 
 
 #### License:
+<<<<<<< HEAD
 "ISC"
+=======
+"ISC"
+>>>>>>> origin/main

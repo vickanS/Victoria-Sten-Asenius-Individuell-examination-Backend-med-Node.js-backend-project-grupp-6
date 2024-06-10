@@ -1,5 +1,8 @@
-import bcrypt from "bcrypt";
-import { userDb } from "../config/db.js";
+
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import { userDb } from '../config/db.js'; // Anta att du har en userDb för användardata
+
 
 // Funktion för att registrera en ny användare
 async function registerUser(req, res) {
@@ -19,31 +22,37 @@ async function registerUser(req, res) {
   }
 }
 
-// Funktion för att logga in en användare
+
+const SECRET_KEY = 'your-secret-key'; // Du bör använda en miljövariabel för detta
+
+
 async function loginUser(req, res) {
   const { username, password } = req.body;
 
-  // Kontrollera att både användarnamn och lösenord finns
   if (!username || !password) {
-    // Om något av användarnamn eller lösenord saknas, skicka tillbaka ett felmeddelande med status 400
     return res
       .status(400)
       .json({ error: "Username and password are required" });
   }
+
+
   try {
-    // Sök efter användaren i vår databas för nya användare
-    const user = userDb.find(
-      (u) => u.username === username && u.password === password
+    const user = await userDb.findOne({ username });
+
+    if (!user || !bcrypt.compareSync(password, user.password)) {
+      return res.status(400).json({ error: 'Invalid username or password' });
+    }
+
+    const token = jwt.sign(
+      { id: user._id, username: user.username },
+      SECRET_KEY,
+      { expiresIn: '1h' }
     );
 
-    // Sätt global.currentUser för att indikera att användaren är inloggad
-    global.currentUser = user;
-
-    // Skicka tillbaka ett meddelande om att inloggningen var framgångsrik med status 200
-    res.status(200).json({ message: "Login successful" });
+    res.status(200).json({ message: 'Login successful', token });
   } catch (error) {
-    // Om ett fel uppstår under inloggningen, skicka tillbaka ett felmeddelande med status 400
-    res.status(400).json({ error: "Failed to login user" });
+    res.status(500).json({ error: 'Failed to login user' });
+
   }
 }
 
