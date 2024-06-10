@@ -12,18 +12,18 @@ async function registerUser(req, res) {
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = { username, password: hashedPassword };
 
-    // Försök att lägga till den nya användaren i databasen
+    
     const newUser = await userDb.insert(user);
-    // Om det lyckas, returnera den nya användaren
+  
     res.status(201).json(newUser);
   } catch (error) {
-    // Om ett fel uppstår, returnera ett felmeddelande
+   
     res.status(400).json({ error: "Failed to register user" });
   }
 }
 
 
-const SECRET_KEY = 'your-secret-key'; // Du bör använda en miljövariabel för detta
+const SECRET_KEY = 'your-secret-key'; 
 
 
 async function loginUser(req, res) {
