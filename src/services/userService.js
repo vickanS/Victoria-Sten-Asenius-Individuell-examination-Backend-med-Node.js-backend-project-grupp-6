@@ -1,6 +1,8 @@
+
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { userDb } from '../config/db.js'; // Anta att du har en userDb för användardata
+
 
 // Funktion för att registrera en ny användare
 async function registerUser(req, res) {
@@ -16,11 +18,13 @@ async function registerUser(req, res) {
     res.status(201).json(newUser);
   } catch (error) {
     // Om ett fel uppstår, returnera ett felmeddelande
-    res.status(400).json({ error: 'Failed to register user' });
+    res.status(400).json({ error: "Failed to register user" });
   }
 }
 
+
 const SECRET_KEY = 'your-secret-key'; // Du bör använda en miljövariabel för detta
+
 
 async function loginUser(req, res) {
   const { username, password } = req.body;
@@ -28,8 +32,9 @@ async function loginUser(req, res) {
   if (!username || !password) {
     return res
       .status(400)
-      .json({ error: 'Username and password are required' });
+      .json({ error: "Username and password are required" });
   }
+
 
   try {
     const user = await userDb.findOne({ username });
@@ -47,6 +52,7 @@ async function loginUser(req, res) {
     res.status(200).json({ message: 'Login successful', token });
   } catch (error) {
     res.status(500).json({ error: 'Failed to login user' });
+
   }
 }
 

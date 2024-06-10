@@ -14,6 +14,7 @@ async function createguestOrder(req, res) {
     const orderTime = new Date();
     const maxPreparationTime = Math.max(...cart.map(order => order.preptime));
 
+
     console.log(maxPreparationTime);
 
     const deliveryTime = new Date(
@@ -62,6 +63,7 @@ async function createOrder(req, res) {
     const orderTime = new Date();
     const maxPreparationTime = Math.max(...cart.map(order => order.preptime));
 
+
     console.log(maxPreparationTime);
 
     const deliveryTime = new Date(
@@ -80,17 +82,21 @@ async function createOrder(req, res) {
       userId: user.id, // Inkluderar userId om användaren är inloggad
     };
 
+
     const newOrder = await orderDb.insert(order);
+
 
     // Tömmer kundvagnen efter ordern är skapad
     await cartDb.remove({}, { multi: true });
 
     res.status(201).json({
+
       items: newOrder.items,
       totalPrice: newOrder.totalPrice,
       delivery: newOrder.deliveryTime,
       message: 'Order created successfully',
       orderId: newOrder._id, // Inkluderar orderId om användaren är inloggad
+
     });
   } catch (error) {
     res
@@ -125,4 +131,6 @@ async function getUserOrders(req, res) {
   }
 }
 
+
 export { createOrder, getUserOrders, createguestOrder };
+
