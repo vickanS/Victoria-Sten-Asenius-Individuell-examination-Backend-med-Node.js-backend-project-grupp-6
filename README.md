@@ -90,10 +90,6 @@ All endpoints that require authentication use JWT (JSON Web Token) to secure the
 
 
 ### Contributors:
-Linnea Sjöholm
-Patrik Eriksson
-Lina Persson Signell
-Jens Alm
 Victoria Sten Åsenius
 
 
