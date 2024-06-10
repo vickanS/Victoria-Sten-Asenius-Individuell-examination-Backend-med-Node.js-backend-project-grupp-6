@@ -80,7 +80,10 @@ URL: /cart/:id
 method: DELETE
 Description: This endpoint allows a user to remove an item from their cart by specifying the item's ID in the URL.
 
+Security
+All endpoints that require authentication use JWT (JSON Web Token) to secure the API
 
+. Send the JWT token in the Authorization header with each request that requires authentication.
 
 
 ### Contributors:
