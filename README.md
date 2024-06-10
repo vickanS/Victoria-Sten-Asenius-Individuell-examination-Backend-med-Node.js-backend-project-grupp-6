@@ -83,7 +83,7 @@ Description: This endpoint allows a user to remove an item from their cart by sp
 
 
 
-Security
+### Security
 All endpoints that require authentication use JWT (JSON Web Token) to secure the API
 
 . Send the JWT token in the Authorization header with each request that requires authentication.
