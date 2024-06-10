@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { menuDb } from "../config/data.js";
+import { menuDb } from "../config/db.js";
+import { menu } from "../config/data.js";
 
 const router = Router();
 
