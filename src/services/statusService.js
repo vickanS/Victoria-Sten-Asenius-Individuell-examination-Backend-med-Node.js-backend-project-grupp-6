@@ -34,7 +34,9 @@ async function getOrderById(req, res) {
     res.status(200).json({ orderWithDeliveryStatus });
   } catch (error) {
     // Om ett fel uppstår vid hämtning av användarens orderhistorik, skicka tillbaka ett felmeddelande med status 400
-    res.status(400).json({ error: "Failed to get users orders" });
+
+    res.status(400).json({ error: 'Failed to get users orders' });
+
   }
 }
 
