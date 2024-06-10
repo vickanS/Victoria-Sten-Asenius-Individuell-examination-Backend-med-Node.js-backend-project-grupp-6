@@ -101,6 +101,7 @@ res:
 ### 3.
 URL: /order
 Method: POST
+Header: Authorization: Bearer <token>
 Description: This endpoint allows authenticated users to create a new order.
 <<<<<<< HEAD
 req:
@@ -131,7 +132,7 @@ res:
 =======
 >>>>>>> origin/main
 
-URL: /order
+URL: /order/user/:userId
 Method: GET
 Description: This endpoint shows a list of all your orders, and the total sum.
 <<<<<<< HEAD
@@ -283,6 +284,12 @@ res:
 
 
 >>>>>>> origin/main
+
+### Security
+All endpoints that require authentication use JWT (JSON Web Token) to secure the API
+
+. Send the JWT token in the Authorization header with each request that requires authentication.
+
 
 ### Contributors:
 Linnea Sjöholm
