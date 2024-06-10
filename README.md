@@ -42,7 +42,7 @@ Method: POST
 Header: Authorization: Bearer <token>
 Description: This endpoint allows authenticated users to create a new order.
 
-URL: /order
+URL: /order/user/:userId
 Method: GET
 Description: This endpoint shows a list of all your orders, and the total sum.
 
