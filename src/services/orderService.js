@@ -10,18 +10,15 @@ async function createguestOrder(req, res) {
 
     const totalPrice = cart.reduce((total, order) => total + order.price, 0);
 
-    //Beräkna leveranstid
     const orderTime = new Date();
     const maxPreparationTime = Math.max(...cart.map(order => order.preptime));
 
 
-    console.log(maxPreparationTime);
 
     const deliveryTime = new Date(
       orderTime.getTime() + maxPreparationTime * 60000
     );
 
-    console.log(orderTime, deliveryTime);
 
     const order = {
       items: cart,
@@ -32,7 +29,6 @@ async function createguestOrder(req, res) {
 
     await orderDb.insert(order);
 
-    // Tömmer kundvagnen efter ordern är skapad
     await cartDb.remove({}, { multi: true });
 
     res.status(201).json({
@@ -59,20 +55,16 @@ async function createOrder(req, res) {
 
     const totalPrice = cart.reduce((total, order) => total + order.price, 0);
 
-    // Beräkna leveranstid
     const orderTime = new Date();
     const maxPreparationTime = Math.max(...cart.map(order => order.preptime));
 
 
-    console.log(maxPreparationTime);
 
     const deliveryTime = new Date(
       orderTime.getTime() + maxPreparationTime * 60000
     );
 
-    console.log(orderTime, deliveryTime);
 
-    // Kolla om användaren är inloggad
     const user = req.user;
     const order = {
       items: cart,
@@ -86,7 +78,6 @@ async function createOrder(req, res) {
     const newOrder = await orderDb.insert(order);
 
 
-    // Tömmer kundvagnen efter ordern är skapad
     await cartDb.remove({}, { multi: true });
 
     res.status(201).json({
@@ -105,28 +96,20 @@ async function createOrder(req, res) {
   }
 }
 
-// JENS, VILL DU GÖRA DEN HÄR TACK (getUserOrders funktionen)
-// Den ska visa alla ordrar och en totalsumma för alla ordrar
 
 // Funktion för att hämta en användares orderhistorik
 async function getUserOrders(req, res) {
   try {
-    // Hämta användarens ID från request params
     const userId = req.params.userId;
-    console.log(userId);
 
-    // Använd find för att hämta en enskild orderhistorik baserat på användarens ID
     const usersOrder = await orderDb.find({ userId: userId });
 
-    // Om det inte finns någon orderhistorik för den angivna användaren, skicka tillbaka ett felmeddelande med status 404
     if (usersOrder.length === 0) {
       return res.status(404).json({ error: 'No orders found' });
     }
 
-    // Skicka tillbaka användarens orderhistorik med status 200
     res.status(200).json({ orderCount: usersOrder.length, orders: usersOrder });
   } catch (error) {
-    // Om ett fel uppstår vid hämtning av användarens orderhistorik, skicka tillbaka ett felmeddelande med status 400
     res.status(500).json({ error: 'Failed to get users orders' });
   }
 }
