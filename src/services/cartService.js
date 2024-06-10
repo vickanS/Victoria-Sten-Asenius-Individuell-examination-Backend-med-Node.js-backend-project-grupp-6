@@ -3,8 +3,7 @@ import { menu } from '../config/data.js';
 
 // "POST"/cart Funktion för att lägga till i kundvagnen
 async function addToCart(req, res) {
-  // Hämta 'title' och 'price' från klientens förfrågan (request body)
-  const { title, price } = req.body; // req.body används för att fånga upp data som skickas i en POST-begäran till servern.
+  const { title, price } = req.body; 
 
   const product = menu.find(item => item.title === title);
 
