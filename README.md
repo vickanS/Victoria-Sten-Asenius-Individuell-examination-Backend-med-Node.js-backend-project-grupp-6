@@ -39,6 +39,7 @@ Description: This endpoint returns information about the company.
 ### 3.
 URL: /order
 Method: POST
+Header: Authorization: Bearer <token>
 Description: This endpoint allows authenticated users to create a new order.
 
 URL: /order
