@@ -1,18 +1,28 @@
-import { Router } from "express";
+import { Router } from 'express';
 
 import {
   createOrder,
-  viewCart,
-  deleteOrder,
-} from "../services/orderService.js";
-import { validateOrder } from "../middleware/validateOrder.js";
+  createguestOrder,
+  getUserOrders,
+} from '../services/orderService.js';
 
-const router = Router();
-// "POST"/order Funktion för att skapa en ny order
-router.post("/", validateOrder, createOrder);
-// "GET"/order Få fram kundvagnen med totalpris på ordern
-router.get("/", viewCart);
-// "DELETE"/order ta bort en order
-router.delete("/:id", deleteOrder);
+import { getOrderById } from '../services/statusService.js';
+import { authenticateToken } from '../middleware/authToken.js';
 
-export default router;
+const orderRouter = Router();
+
+// "POST" /order genomför beställning
+
+orderRouter.post('/', authenticateToken, createOrder);
+
+//Post /order/guest
+orderRouter.post('/guest', createguestOrder);
+
+
+// "GET" /order visar alla ordrar och total summa
+orderRouter.get('/user/:userId', getUserOrders);
+
+// "GET" /order/:orderId visar status sidan för en specifik order
+orderRouter.get('/:orderId', getOrderById);
+
+export default orderRouter;

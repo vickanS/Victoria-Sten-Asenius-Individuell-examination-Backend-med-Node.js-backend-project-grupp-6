@@ -1,95 +1,136 @@
-import nedb from "nedb-promises";
-import { menu, users } from "../config/data.js";
+import { cartDb, orderDb } from '../config/db.js';
 
-const database = new nedb({ filename: "orders.db", autoload: true });
-
-// "POST"/order Funktion för att skapa en ny order
-async function createOrder(req, res) {
-  // Hämta 'title' och 'price' från klientens förfrågan (request body)
-  const { title, price, userId } = req.body; // req.body används för att fånga upp data som skickas i en POST-begäran till servern.
-
-  // Hitta produkten i menyn baserat på titeln
-  const product = menu.find((item) => item.title === title);
-
-  // Om produkten inte finns i menyn, returnera ett felmeddelande
-  if (!product) {
-    return res.status(400).json({ error: "Product not found" });
-  }
-
-  // Om priset inte matchar produktens pris, returnera ett felmeddelande
-  if (product.price !== price) {
-    return res.status(400).json({ error: "Invalid price" });
-  }
-
-  // Skapa en order med titel och pris
-  const order = { title, price, userId };
+//Beställning som gäst
+async function createguestOrder(req, res) {
   try {
-    // Infogar ordern i databasen
-    const newOrder = await database.insert(order);
-
-    // Lägga till ordern i användarens historik
-    const user = users.find((u) => u.id === userId);
-    if (user) {
-      user.orders.push(newOrder);
-    } else {
-      return res.status(400).json({ error: "User not found" });
+    const cart = await cartDb.find({});
+    if (cart.length === 0) {
+      return res.status(400).json({ message: 'Cart is empty' });
     }
 
-    // Skapa ett svar med orderns titel, pris och ett framgångsmeddelande
-    const response = {
-      title: newOrder.title,
-      price: newOrder.price,
-      message: "Order created successfully",
-    };
-
-    // Skicka svaret tillbaka till klienten med statuskod 201 (Created)
-    res.status(201).json(response);
-  } catch (error) {
-    // Om något går fel, skicka ett felmeddelande tillbaka till klienten
-    res.status(400).json({ error: "Failed to create order" });
-  }
-}
-
-// "GET"/order varukorg
-async function viewCart(req, res) {
-  try {
-    // Visar vad du har i "varukorgen"
-    const cart = await database.find({}).exec();
-
-    // Räknar ut totalsumman
     const totalPrice = cart.reduce((total, order) => total + order.price, 0);
 
-    // Skickar tillbaka ordern med totalsumman
-    res.status(200).json({ cart, totalPrice });
-  } catch (error) {
-    // Om ett fel uppstår, skicka ett felmeddelande med statuskod 400 till klienten
-    res.status(400).json({ error: "Failed to retrieve cart" });
-  }
-}
+    //Beräkna leveranstid
+    const orderTime = new Date();
+    const maxPreparationTime = Math.max(...cart.map(order => order.preptime));
 
-// "DELETE"/order Ta bort order
-async function deleteOrder(req, res) {
-  try {
-    const order = await database.findOne({ _id: req.params.id });
 
-    if (!order) {
-      return res.status(404).json({ message: "Order not found" });
-    }
+    console.log(maxPreparationTime);
 
-    await database.remove({ _id: req.params.id });
+    const deliveryTime = new Date(
+      orderTime.getTime() + maxPreparationTime * 60000
+    );
 
-    // Ta bort ordern från användarens historik
-    const user = users.find((u) => u.id === order.userId);
-    if (user) {
-      user.orders = user.orders.filter((o) => o._id !== req.params.id);
-    }
+    console.log(orderTime, deliveryTime);
 
-    res.status(200).json({ message: "Order removed successfully" });
+    const order = {
+      items: cart,
+      totalPrice,
+      deliveryTime,
+      createdAt: new Date(),
+    };
+
+    await orderDb.insert(order);
+
+    // Tömmer kundvagnen efter ordern är skapad
+    await cartDb.remove({}, { multi: true });
+
+    res.status(201).json({
+      items: order.items,
+      totalPrice: order.totalPrice,
+      delivery: order.deliveryTime,
+      message: 'Order created successfully',
+      orderId: order._id,
+    });
   } catch (error) {
     res
       .status(500)
-      .json({ message: "An error occurred", error: error.message });
+      .json({ message: 'Failed to create order', error: error.message });
   }
 }
 
-export { createOrder, viewCart, deleteOrder };
+//Beställning som inloggad användare:
+async function createOrder(req, res) {
+  try {
+    const cart = await cartDb.find({});
+    if (cart.length === 0) {
+      return res.status(400).json({ message: 'Cart is empty' });
+    }
+
+    const totalPrice = cart.reduce((total, order) => total + order.price, 0);
+
+    // Beräkna leveranstid
+    const orderTime = new Date();
+    const maxPreparationTime = Math.max(...cart.map(order => order.preptime));
+
+
+    console.log(maxPreparationTime);
+
+    const deliveryTime = new Date(
+      orderTime.getTime() + maxPreparationTime * 60000
+    );
+
+    console.log(orderTime, deliveryTime);
+
+    // Kolla om användaren är inloggad
+    const user = req.user;
+    const order = {
+      items: cart,
+      totalPrice,
+      deliveryTime,
+      createdAt: new Date(),
+      userId: user.id, // Inkluderar userId om användaren är inloggad
+    };
+
+
+    const newOrder = await orderDb.insert(order);
+
+
+    // Tömmer kundvagnen efter ordern är skapad
+    await cartDb.remove({}, { multi: true });
+
+    res.status(201).json({
+
+      items: newOrder.items,
+      totalPrice: newOrder.totalPrice,
+      delivery: newOrder.deliveryTime,
+      message: 'Order created successfully',
+      orderId: newOrder._id, // Inkluderar orderId om användaren är inloggad
+
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: 'Failed to create order', error: error.message });
+  }
+}
+
+// JENS, VILL DU GÖRA DEN HÄR TACK (getUserOrders funktionen)
+// Den ska visa alla ordrar och en totalsumma för alla ordrar
+
+// Funktion för att hämta en användares orderhistorik
+async function getUserOrders(req, res) {
+  try {
+    // Hämta användarens ID från request params
+    const userId = req.params.userId;
+    console.log(userId);
+
+    // Använd find för att hämta en enskild orderhistorik baserat på användarens ID
+    const usersOrder = await orderDb.find({ userId: userId });
+
+    // Om det inte finns någon orderhistorik för den angivna användaren, skicka tillbaka ett felmeddelande med status 404
+    if (usersOrder.length === 0) {
+      return res.status(404).json({ error: 'No orders found' });
+    }
+
+    // Skicka tillbaka användarens orderhistorik med status 200
+    res.status(200).json({ orderCount: usersOrder.length, orders: usersOrder });
+  } catch (error) {
+    // Om ett fel uppstår vid hämtning av användarens orderhistorik, skicka tillbaka ett felmeddelande med status 400
+    res.status(500).json({ error: 'Failed to get users orders' });
+  }
+}
+
+
+export { createOrder, getUserOrders, createguestOrder };
+
