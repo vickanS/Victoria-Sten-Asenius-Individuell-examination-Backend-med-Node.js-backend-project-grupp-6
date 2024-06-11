@@ -26,8 +26,20 @@ http://localhost:8000
 
 ### 1.
 URL: /menu
+Method: POST
+Description: This endpoint adds a new product to the menu.
+
+URL: /menu/:id
+Method: PUT
+Description: This endpoint updates a product in the menu.
+
+URL: /menu
 Method: GET
 Description: This endpoint returns the entire menu.
+
+URL: /menu/:id
+Method: DELETE
+Description: This endpoint detletes a product in the menu with a specific id.
 
 
 ### 2.
