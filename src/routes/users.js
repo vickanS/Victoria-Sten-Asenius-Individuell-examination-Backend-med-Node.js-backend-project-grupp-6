@@ -4,6 +4,7 @@ import { registerUser, loginUser } from '../services/userService.js';
 import { validateUser } from '../middleware/validateUser.js';
 
 
+
 const authRouter = Router();
 
 // "POST" /user/register - Funktion för att registrera en ny användare

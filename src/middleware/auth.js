@@ -17,4 +17,4 @@ const authorizeAdmin = (req, res, next) => {
 
 };
 
-export default authenticate;
+export { authenticate, authorizeAdmin };
