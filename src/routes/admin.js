@@ -153,6 +153,7 @@ router.post('/menu', authenticate, authorizeAdmin, authorizeUser, async (req, re
 // POST /admin/logout - Funktion för att logga ut en administratör
 router.post('/logout', logoutAdmin);
 
+// POST /admin/campaign - Funktion för att lägga till ett kampanjerbjudande
 router.post('/campaign', authenticate, authorizeAdmin, validateCampaign, addCampaign )
 
 export default router;

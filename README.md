@@ -25,30 +25,47 @@ http://localhost:8000
 ## Endpoints:
 
 ### 1.
-URL: /menu
+URL: /admin/create-user
 Method: POST
-Description: This endpoint adds a new product to the menu.
+Description: This endpoint creates an administrator user.
+
+URL: /admin/login
+Method: POST
+Description: This endpoint allows an administrator to log in.
+
+URL: /menu/:id
+Method: DELETE
+Header: Authorization: Bearer <token>
+Description: This endpoint allows an administrator to delete a product with a specific id.
 
 URL: /menu/:id
 Method: PUT
-Description: This endpoint updates a product in the menu.
+Header: Authorization: Bearer <token>
+Description: This endpoint allows an administrator to change a product in the menu.
 
+URL: /admin/menu
+Method: POST
+Header: Authorization: Bearer <token>
+Description: This endpoint allows an administrator to add a product to the menu.
+
+URL: /admin/campaign
+Method: POST
+Header: Authorization: Bearer <token>
+Description: This endpoint allows an administrator to add a campaign offer.
+
+### 2.
 URL: /menu
 Method: GET
 Description: This endpoint returns the entire menu.
 
-URL: /menu/:id
-Method: DELETE
-Description: This endpoint detletes a product in the menu with a specific id.
 
-
-### 2.
+### 3.
 URL: /about
 Method: GET
 Description: This endpoint returns information about the company.
 
 
-### 3.
+### 4.
 URL: /order
 Method: POST
 Header: Authorization: Bearer <token>
@@ -63,7 +80,7 @@ Method: GET
 Description: This endpoint shows the status of a specific order.
 
 
-### 4.
+### 5.
 /user
 
 URL: /user/register
@@ -79,7 +96,7 @@ Method: POST
 Description: This endpoint allows a user to log out.
 
 
-### 5.
+### 6.
 URL: /cart
 method: POST
 Description: this endpoint allow a user to add an item to their cart.
