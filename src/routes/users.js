@@ -2,6 +2,7 @@
 import { Router } from 'express';
 import { registerUser, loginUser } from '../services/userService.js';
 import { validateUser } from '../middleware/validateUser.js';
+import { authenticate, authorizeUser } from '../middleware/auth.js';
 
 
 
@@ -11,7 +12,7 @@ const authRouter = Router();
 authRouter.post("/register", validateUser, registerUser);
 
 // "POST" /user/login - Funktion för att logga in en användare
-authRouter.post("/login", loginUser);
+authRouter.post("/login", authenticate, loginUser);
 
 // "POST" /user/logout - Funktion för att logga ut en användare
 authRouter.post("/logout", (req, res) => {
