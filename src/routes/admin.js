@@ -1,7 +1,8 @@
-import bcrypt from 'bcrypt';
 import express from 'express';
-import { userDb, menuDb } from '../config/db.js';
-import { authenticate, authorizeAdmin, logoutAdmin } from '../middleware/auth.js';
+import { menuDb, userDb } from '../config/db.js'; // Se till att userDb är importerat
+import { authenticate, authorizeAdmin, authorizeUser, logoutAdmin } from '../middleware/auth.js';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 const router = express.Router();
 
@@ -31,36 +32,37 @@ router.post('/create-user', async (req, res) => {
     }
 });
 
-// POST /admin/login - Funktion för att logga in en administratör
+// POST /admin/login - Logga in en administratör
 router.post('/login', async (req, res) => {
     const { username, password } = req.body;
-    console.log('Received username:', username);
-    console.log('Received password:', password);
+
+    if (!username || !password) {
+        return res.status(400).json({ error: 'Both username and password are required' });
+    }
 
     try {
-        const user = await userDb.findOne({ username });
+        const users = await userDb.find({ username });
+        const user = users[0];
 
         if (!user) {
-            console.log('User not found');
             return res.status(401).json({ error: 'Invalid username or password' });
         }
 
-        const passwordMatch = bcrypt.compareSync(password, user.password);
-        if (!passwordMatch) {
-            console.log('Invalid password');
+        const isPasswordValid = bcrypt.compareSync(password, user.password);
+
+        if (!isPasswordValid) {
             return res.status(401).json({ error: 'Invalid username or password' });
         }
 
-        console.log('Login successful for user:', username);
-        res.status(200).json({ message: 'Login successful', user });
+        const token = jwt.sign({ id: user._id, role: user.role }, 'your_jwt_secret_key', { expiresIn: '1h' });
+
+        res.status(200).json({ token });
     } catch (error) {
-        console.error('Error during login:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        console.error('Failed to login:', error);
+        res.status(500).json({ error: 'Failed to login' });
     }
 });
 
-// POST /admin/logout - Funktion för att logga ut en administratör
-router.post('/logout', logoutAdmin);
 
 // DELETE /menu/:id - Ta bort en produkt med ett specifikt ID
 router.delete("/menu/:id", authenticate, authorizeAdmin, async (req, res) => {
@@ -116,11 +118,15 @@ router.put("/menu/:id", authenticate, authorizeAdmin, async (req, res) => {
     }
 });
 
-// POST /menu - Lägg till en ny produkt
-router.post("/menu", authenticate, authorizeAdmin, async (req, res) => {
+// POST /admin/menu - Lägg till en ny produkt i menyn
+router.post('/menu', authenticate, authorizeAdmin, authorizeUser, async (req, res) => {
+    console.log('POST request received at /admin/menu');
+    console.log('Request body:', req.body);
+
     const { id, title, desc, price } = req.body;
 
     if (!id || !title || !desc || !price) {
+        console.error('Validation error: Missing required fields');
         return res.status(400).json({ error: 'All properties (id, title, desc, price) are required' });
     }
 
@@ -142,4 +148,8 @@ router.post("/menu", authenticate, authorizeAdmin, async (req, res) => {
     }
 });
 
+// POST /admin/logout - Funktion för att logga ut en administratör
+router.post('/logout', logoutAdmin);
+
 export default router;
+

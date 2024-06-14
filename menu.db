@@ -1,1 +1,4 @@
 {"id":7,"title":"Updated Espresso","desc":"An even stronger coffee made by forcing steam through ground coffee beans.","price":35,"createdAt":"2024-06-11T11:27:51.268Z","_id":"zUgu8q8oV3edDZQY","modifiedAt":"2024-06-11T12:55:25.308Z"}
+{"id":"unique-id-123","title":"New Menu Item","desc":"Delicious new item","price":9.99,"createdAt":"2024-06-14T13:20:17.196Z","_id":"TAoFOp9dZbRHvGO2"}
+{"id":"unique-id-123","title":"New Menu Item","desc":"Delicious new item","price":10,"createdAt":"2024-06-14T13:20:17.196Z","_id":"TAoFOp9dZbRHvGO2","modifiedAt":"2024-06-14T13:24:10.149Z"}
+{"$$deleted":true,"_id":"TAoFOp9dZbRHvGO2"}

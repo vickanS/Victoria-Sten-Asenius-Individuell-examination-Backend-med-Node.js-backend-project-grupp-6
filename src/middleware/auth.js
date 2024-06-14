@@ -1,53 +1,61 @@
-import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import { userDb } from '../config/db.js';
 
-let currentAdmin = null; // Global variabel för att spåra inloggad admin
+// Middleware för att autentisera användare
+export const authenticate = (req, res, next) => {
+    const authHeader = req.headers.authorization;
 
-// Middleware för autentisering av användare
-const authenticate = async (req, res, next) => {
-    const { username, password } = req.body;
+    if (!authHeader) {
+        return res.status(401).json({ error: 'Authorization header is missing' });
+    }
+
+    const token = authHeader.split(' ')[1];
+
+    if (!token) {
+        return res.status(401).json({ error: 'Token is missing' });
+    }
 
     try {
-        // Hämta användare från databasen
-        const user = await userDb.findOne({ username });
+        const decoded = jwt.verify(token, 'your_jwt_secret_key');
+        req.user = decoded;
+        next();
+    } catch (error) {
+        return res.status(401).json({ error: 'Invalid token' });
+    }
+};
 
-        // Om användaren inte finns eller om lösenordet inte matchar
-        if (!user || !bcrypt.compareSync(password, user.password)) {
-            return res.status(401).json({ error: 'Invalid username or password' });
+// Exempel på auktoriseringsfunktion för att kontrollera om användaren är admin
+export const authorizeUser = (req, res, next) => {
+  // Här kan du implementera din logik för att kontrollera om användaren är auktoriserad
+  // Till exempel, om användaren är admin:
+  if (req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'Unauthorized' });
+  }
+  // Om auktoriserad, gå vidare till nästa middleware eller route handler
+  next();
+};
+
+// Middleware för att auktorisera admin
+export const authorizeAdmin = async (req, res, next) => {
+    try {
+        const users = await userDb.find({ _id: req.user.id });
+        const user = users[0];
+
+        if (!user || user.role !== 'admin') {
+            return res.status(403).json({ error: 'Forbidden: Requires admin role' });
         }
 
-        // Om lösenordet är korrekt
-        req.user = user;
-        next(); // Gå vidare till nästa middleware eller route handler
+        next();
     } catch (error) {
-        console.error('Failed to authenticate:', error.message);
-        return res.status(500).json({ error: 'Failed to authenticate' });
+        return res.status(500).json({ error: 'Failed to authorize' });
     }
 };
 
-// Middleware för att auktorisera både admin och användare
-const authorizeUser = (req, res, next) => {
-    if (!req.user || (req.user.role !== 'admin' && req.user.role !== 'user')) {
-        return res.status(403).json({ error: 'Forbidden' });
-    }
-    next();
-};
-
-// Middleware för att auktorisera endast admin
-const authorizeAdmin = (req, res, next) => {
-    if (!req.user || req.user.role !== 'admin') {
-        return res.status(403).json({ error: 'Forbidden' });
-    }
-    next();
-};
-
-// Middleware för att logga ut en admin
-const logoutAdmin = (req, res, next) => {
-    currentAdmin = null; // Implementera här hur du vill logga ut admin
+// Middleware för att logga ut admin
+export const logoutAdmin = (req, res) => {
     res.status(200).json({ message: 'Logged out successfully' });
 };
 
-export { authenticate, authorizeUser, authorizeAdmin, logoutAdmin };
 
 
 
