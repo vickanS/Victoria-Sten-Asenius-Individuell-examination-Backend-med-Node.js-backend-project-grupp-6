@@ -1,8 +1,10 @@
 import express from 'express';
-import { menuDb, userDb } from '../config/db.js'; // Se till att userDb är importerat
+import { menuDb, userDb } from '../config/db.js';
 import { authenticate, authorizeAdmin, authorizeUser, logoutAdmin } from '../middleware/auth.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { validateCampaign } from '../middleware/validateCampaign.js';
+import { addCampaign } from '../services/campaignService.js';
 
 const router = express.Router();
 
@@ -150,6 +152,8 @@ router.post('/menu', authenticate, authorizeAdmin, authorizeUser, async (req, re
 
 // POST /admin/logout - Funktion för att logga ut en administratör
 router.post('/logout', logoutAdmin);
+
+router.post('/campaign', authenticate, authorizeAdmin, validateCampaign, addCampaign )
 
 export default router;
 

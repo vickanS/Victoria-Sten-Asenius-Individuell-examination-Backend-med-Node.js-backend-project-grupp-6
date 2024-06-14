@@ -26,8 +26,7 @@ export const authenticate = (req, res, next) => {
 
 // Exempel på auktoriseringsfunktion för att kontrollera om användaren är admin
 export const authorizeUser = (req, res, next) => {
-  // Här kan du implementera din logik för att kontrollera om användaren är auktoriserad
-  // Till exempel, om användaren är admin:
+ 
   if (req.user.role !== 'admin') {
       return res.status(403).json({ error: 'Unauthorized' });
   }
